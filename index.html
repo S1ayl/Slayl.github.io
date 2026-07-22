@@ -1,673 +1,914 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blender Portfolio · 3D Artist</title>
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-      transition: background 0.2s, color 0.2s, border-color 0.2s;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blender Portfolio · 3D Artist</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           СТИЛИ – можно менять под свой вкус
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      background: #1a0e0a;
-      color: #f5e6d9;
-      min-height: 100vh;
-      padding: 2rem 1.5rem;
-    }
+        html {
+            scroll-behavior: smooth;
+        }
 
-    /* main container */
-    .container {
-      max-width: 1300px;
-      margin: 0 auto;
-      background: #2f1a12;
-      border-radius: 3rem 3rem 2rem 2rem;
-      padding: 2rem 2.5rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
-      border: 1px solid #b64a2a;
-    }
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: #1a0e0a;
+            color: #f5e6d9;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    /* header / lang toggle */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      margin-bottom: 2.5rem;
-      border-bottom: 2px solid #c95f3a;
-      padding-bottom: 1.2rem;
-    }
+        /* ===== КРАСНО-ОРАНЖЕВАЯ ТЕМА ===== */
+        :root {
+            --bg-primary: #1a0e0a;
+            --bg-secondary: #2f1a12;
+            --bg-card: #23130e;
+            --bg-card-hover: #311f16;
+            --accent: #d94f1e;
+            --accent-glow: #ff7b3a;
+            --accent-dark: #8f3f22;
+            --text-primary: #f5e6d9;
+            --text-secondary: #dbaa92;
+            --text-muted: #b8866a;
+            --border: #9f4d2e;
+            --border-light: #b85a34;
+            --radius: 16px;
+            --radius-lg: 24px;
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(217, 79, 30, 0.15);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    .logo h1 {
-      font-size: 2.2rem;
-      font-weight: 600;
-      background: linear-gradient(145deg, #ff7b3a, #d94f1e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.5px;
-    }
-    .logo span {
-      font-size: 1rem;
-      background: #4a2518;
-      padding: 0.2rem 1rem;
-      border-radius: 40px;
-      color: #f0a58a;
-      margin-left: 0.5rem;
-      -webkit-text-fill-color: #f0a58a;
-    }
+        /* Фоновые частицы (красно-оранжевые) */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .bg-particles .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.10;
+            animation: floatOrb 20s ease-in-out infinite;
+        }
+        .bg-particles .orb:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            background: #d94f1e;
+            top: -10%;
+            left: -5%;
+            animation-delay: 0s;
+            animation-duration: 22s;
+        }
+        .bg-particles .orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: #ff6a2e;
+            bottom: -15%;
+            right: -8%;
+            animation-delay: -7s;
+            animation-duration: 25s;
+        }
+        .bg-particles .orb:nth-child(3) {
+            width: 350px;
+            height: 350px;
+            background: #b84a1e;
+            top: 50%;
+            left: 50%;
+            animation-delay: -14s;
+            animation-duration: 18s;
+        }
 
-    .lang-toggle {
-      display: flex;
-      gap: 0.3rem;
-      background: #2f1a12;
-      padding: 0.3rem;
-      border-radius: 60px;
-      border: 1px solid #b85a34;
-    }
-    .lang-btn {
-      background: transparent;
-      border: none;
-      padding: 0.5rem 1.2rem;
-      border-radius: 40px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: #dbaa92;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .lang-btn.active {
-      background: #d94f1e;
-      color: #fff2e6;
-      box-shadow: 0 4px 10px rgba(217, 79, 30, 0.4);
-    }
-    .lang-btn:hover {
-      background: #b85a34;
-      color: white;
-    }
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(60px, -80px) scale(1.15); }
+            50% { transform: translate(-30px, 40px) scale(0.9); }
+            75% { transform: translate(-70px, -30px) scale(1.1); }
+        }
 
-    /* sections */
-    .section-title {
-      font-size: 1.8rem;
-      font-weight: 500;
-      margin: 2rem 0 1.2rem 0;
-      color: #ff8a55;
-      border-left: 6px solid #e15f2b;
-      padding-left: 1rem;
-      letter-spacing: -0.3px;
-    }
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+        }
 
-    /* editable experience */
-    .exp-block {
-      background: #23130e;
-      border-radius: 28px;
-      padding: 1.5rem 2rem;
-      margin: 1rem 0 1.8rem 0;
-      border: 1px solid #9f4d2e;
-      box-shadow: inset 0 0 0 1px #4f2b1d;
-    }
-    .exp-item {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem 2rem;
-      padding: 0.8rem 0;
-      border-bottom: 1px dashed #683b28;
-    }
-    .exp-item:last-child {
-      border-bottom: none;
-    }
-    .exp-year {
-      min-width: 100px;
-      font-weight: 600;
-      color: #f0936b;
-    }
-    .exp-desc {
-      flex: 1;
-      color: #efd5c4;
-    }
-    .exp-desc strong {
-      color: #ff9f77;
-    }
-    .exp-edit {
-      background: transparent;
-      border: 1px solid #b85a34;
-      color: #f0b69b;
-      padding: 0.2rem 1rem;
-      border-radius: 40px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      transition: 0.2s;
-      margin-left: 0.5rem;
-    }
-    .exp-edit:hover {
-      background: #b85a34;
-      color: white;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
 
-    /* gallery grid */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.8rem;
-      margin: 1.5rem 0 2rem;
-    }
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(26, 14, 10, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            transition: all var(--transition);
+            flex-wrap: nowrap;
+            justify-content: center;
+        }
+        .navbar.scrolled {
+            background: rgba(26, 14, 10, 0.95);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(217, 79, 30, 0.2);
+        }
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        .nav-logo .logo-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 12px var(--accent-glow);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { box-shadow: 0 0 12px var(--accent-glow); }
+            50% { box-shadow: 0 0 24px var(--accent-glow), 0 0 40px rgba(255, 123, 58, 0.4); }
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 6px;
+            flex-wrap: nowrap;
+            justify-content: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            padding: 10px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #fff;
+            background: rgba(217, 79, 30, 0.25);
+        }
+        .nav-links a.active {
+            background: rgba(217, 79, 30, 0.35);
+            box-shadow: inset 0 0 0 1px rgba(255, 123, 58, 0.3);
+        }
 
-    .gallery-card {
-      background: #1f110b;
-      border-radius: 28px;
-      overflow: hidden;
-      border: 1px solid #a55634;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.6);
-      transition: transform 0.25s ease, box-shadow 0.3s;
-      backdrop-filter: blur(2px);
-    }
-    .gallery-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 16px 30px rgba(185, 70, 30, 0.3);
-      border-color: #d96a3a;
-    }
+        .lang-switcher {
+            display: flex;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 3px;
+            gap: 2px;
+            margin-left: auto;
+        }
+        .lang-option {
+            padding: 6px 14px;
+            border-radius: 18px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            user-select: none;
+        }
+        .lang-option.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(217, 79, 30, 0.4);
+        }
 
-    .media-wrapper {
-      width: 100%;
-      aspect-ratio: 16 / 10;
-      background: #0e0806;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    .media-wrapper img, .media-wrapper video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .media-wrapper iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-    .card-footer {
-      padding: 0.8rem 1rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #1e100a;
-    }
-    .card-footer .card-title {
-      color: #f5c7b1;
-      font-weight: 500;
-    }
-    .card-actions button {
-      background: transparent;
-      border: 1px solid #9f4d2e;
-      color: #d99b7e;
-      padding: 0.2rem 0.7rem;
-      border-radius: 40px;
-      font-size: 0.7rem;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    .card-actions button:hover {
-      background: #b85a34;
-      color: white;
-      border-color: #b85a34;
-    }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+            padding: 10px;
+            z-index: 1001;
+        }
+        .menu-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all var(--transition);
+        }
 
-    .add-media-btn {
-      background: #3b2016;
-      border: 2px dashed #b85a34;
-      border-radius: 60px;
-      padding: 0.6rem 1.8rem;
-      color: #f0b69b;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-      cursor: pointer;
-      transition: 0.2s;
-      margin: 0.5rem 0 1rem;
-    }
-    .add-media-btn:hover {
-      background: #4f2b1d;
-      border-color: #d96a3a;
-      color: white;
-    }
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .hero h1 {
+            font-size: clamp(2.8rem, 5vw, 4.2rem);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #ff7b3a 0%, #d94f1e 50%, #b84a1e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+        .btn {
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition);
+            border: none;
+            font-family: inherit;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #d94f1e 0%, #ff6a2e 100%);
+            color: #fff;
+            box-shadow: 0 8px 28px rgba(217, 79, 30, 0.35);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 36px rgba(217, 79, 30, 0.5);
+        }
+        .btn-outline {
+            background: transparent;
+            color: #fff;
+            border: 1.5px solid var(--border-light);
+        }
+        .btn-outline:hover {
+            background: rgba(217, 79, 30, 0.15);
+            border-color: var(--accent);
+        }
 
-    /* contact */
-    .contact-section {
-      margin-top: 3rem;
-      padding-top: 1.8rem;
-      border-top: 2px solid #b85a34;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .contact-links {
-      display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .contact-btn {
-      background: #2d1911;
-      border: 1px solid #b85a34;
-      padding: 0.7rem 1.8rem;
-      border-radius: 60px;
-      color: #f0cbb9;
-      font-weight: 500;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      transition: 0.2s;
-      font-size: 1rem;
-    }
-    .contact-btn i {
-      font-size: 1.3rem;
-      color: #ff8a55;
-    }
-    .contact-btn:hover {
-      background: #b85a34;
-      color: white;
-      border-color: #e0703a;
-      box-shadow: 0 0 12px #d94f1e55;
-    }
-    .contact-edit {
-      background: transparent;
-      border: 1px solid #b85a34;
-      color: #f0b69b;
-      padding: 0.2rem 1rem;
-      border-radius: 40px;
-      font-size: 0.7rem;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    .contact-edit:hover {
-      background: #b85a34;
-      color: white;
-    }
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-card);
+            width: 100%;
+            max-width: 440px;
+            aspect-ratio: 16/10;
+            overflow: hidden;
+        }
+        .hero-card video, .hero-card iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 12px;
+            object-fit: cover;
+        }
 
-    /* utility */
-    .flex-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 1rem;
-    }
-    .mt-1 { margin-top: 0.5rem; }
-    .mb-1 { margin-bottom: 0.5rem; }
-    .hidden { display: none; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    /* small screens */
-    @media (max-width: 650px) {
-      .container { padding: 1.5rem 1rem; }
-      .logo h1 { font-size: 1.8rem; }
-    }
+        /* ===== SECTIONS ===== */
+        .section {
+            padding: 100px 0;
+            position: relative;
+            z-index: 1;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent-glow);
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
 
-    /* animation on load */
-    .fade-in {
-      animation: fadeUp 0.5s ease both;
-    }
-    @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(14px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    .gallery-card { animation: fadeUp 0.5s ease both; animation-delay: 0.05s; }
+        /* ===== GALLERY ===== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: all var(--transition);
+            aspect-ratio: 16/10;
+        }
+        .gallery-item:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(217, 79, 30, 0.2);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .gallery-item .item-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.85) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+        .gallery-item:hover .item-overlay {
+            opacity: 1;
+        }
+        .gallery-item .item-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+        .gallery-item .item-tag {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .video-indicator {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            z-index: 2;
+            transition: all var(--transition);
+            color: #fff;
+        }
 
-    /* edit mode highlight */
-    .editable {
-      outline: 2px dashed transparent;
-      transition: outline 0.15s;
-    }
-    .editable:focus {
-      outline: 2px dashed #ff8a55;
-      background: #2d1a12;
-    }
-  </style>
+        /* ===== EXPERIENCE ===== */
+        .exp-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow-card);
+        }
+        .exp-item {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 2rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed var(--border);
+        }
+        .exp-item:last-child {
+            border-bottom: none;
+        }
+        .exp-year {
+            min-width: 120px;
+            font-weight: 600;
+            color: var(--accent-glow);
+        }
+        .exp-desc {
+            flex: 1;
+            color: var(--text-secondary);
+        }
+        .exp-desc strong {
+            color: var(--text-primary);
+        }
+
+        /* ===== ABOUT ===== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .about-image-wrapper {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            aspect-ratio: 4/5;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+        .about-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .skill-tag {
+            padding: 8px 16px;
+            border-radius: 40px;
+            background: rgba(217, 79, 30, 0.15);
+            border: 1px solid rgba(255, 123, 58, 0.25);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-section {
+            background: var(--bg-secondary);
+            padding: 100px 0;
+        }
+        .contact-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+        }
+        .contact-links {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        .contact-link {
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .contact-link.discord {
+            background: #5865f2;
+            color: #fff;
+        }
+        .contact-link.discord:hover {
+            background: #4752c4;
+            transform: translateY(-2px);
+        }
+        .contact-link.telegram {
+            background: #0088cc;
+            color: #fff;
+        }
+        .contact-link.telegram:hover {
+            background: #006699;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ===== LIGHTBOX ===== */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2.5rem;
+            color: #fff;
+            cursor: pointer;
+            z-index: 10;
+            line-height: 1;
+            transition: all var(--transition);
+        }
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+            color: var(--accent-glow);
+        }
+        .lightbox-content {
+            max-width: 90vw;
+            max-height: 85vh;
+            border-radius: 12px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .hero .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero p {
+                margin: 0 auto;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            .navbar {
+                gap: 10px;
+                justify-content: center;
+                flex-wrap: wrap;
+                padding: 8px 16px;
+                border-radius: 24px;
+                top: 12px;
+                width: 95%;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+            .nav-links.collapsed {
+                display: none;
+            }
+            .nav-links {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .lang-switcher {
+                margin-left: 0;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 16px;
+            }
+            .hero {
+                padding: 100px 0 60px;
+            }
+            .section {
+                padding: 60px 0;
+            }
+            .contact-card {
+                padding: 24px;
+            }
+            .exp-block {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container" id="app">
-  <!-- header -->
-  <header class="header">
-    <div class="logo">
-      <h1>🧊 Blender <span>3D</span></h1>
+
+    <!-- ФОН -->
+    <div class="bg-particles">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
     </div>
-    <div class="lang-toggle">
-      <button class="lang-btn active" data-lang="en" id="langEn">ENG</button>
-      <button class="lang-btn" data-lang="ru" id="langRu">RU</button>
-    </div>
-  </header>
+    <div class="grid-pattern"></div>
 
-  <!-- experience -->
-  <section>
-    <h2 class="section-title" id="expTitle">💼 Experience</h2>
-    <div class="exp-block" id="expBlock">
-      <!-- динамически рендерится из JS -->
-    </div>
-    <button class="add-media-btn" id="addExpBtn"><i class="fas fa-plus"></i> <span id="addExpLabel">Add experience</span></button>
-  </section>
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-logo">
+            <span class="logo-dot"></span> Blender
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home" class="active" data-i18n="nav.home">Home</a></li>
+            <li><a href="#gallery" data-i18n="nav.gallery">Gallery</a></li>
+            <li><a href="#experience" data-i18n="nav.experience">Experience</a></li>
+            <li><a href="#about" data-i18n="nav.about">About</a></li>
+            <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+        </ul>
+        <div class="lang-switcher">
+            <span class="lang-option active" data-lang="en">EN</span>
+            <span class="lang-option" data-lang="ru">RU</span>
+        </div>
+        <button class="menu-toggle" id="menuToggle">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
 
-  <!-- gallery -->
-  <section>
-    <h2 class="section-title" id="galleryTitle">🖼️ Gallery</h2>
-    <div class="gallery-grid" id="galleryGrid"></div>
-    <button class="add-media-btn" id="addMediaBtn"><i class="fas fa-plus"></i> <span id="addMediaLabel">Add media</span></button>
-  </section>
-
-  <!-- contact -->
-  <section class="contact-section">
-    <div>
-      <h3 style="color: #f0936b; font-weight: 400; letter-spacing: 0.5px;" id="contactTitle">📬 Contact me</h3>
-      <div class="contact-links" id="contactLinks">
-        <!-- динамически -->
-      </div>
-    </div>
-    <button class="contact-edit" id="editContactBtn"><i class="fas fa-pen"></i> <span id="editContactLabel">Edit contacts</span></button>
-  </section>
-</div>
-
-<script>
-  (function() {
-    // ----- i18n strings -----
-    const strings = {
-      en: {
-        expTitle: '💼 Experience',
-        galleryTitle: '🖼️ Gallery',
-        contactTitle: '📬 Contact me',
-        addExp: 'Add experience',
-        addMedia: 'Add media',
-        editContact: 'Edit contacts',
-        yearPlaceholder: 'Year',
-        descPlaceholder: 'Description',
-        discord: 'Discord',
-        telegram: 'Telegram',
-        defaultExp: [
-          { year: '2023 — now', desc: 'Freelance 3D artist · character sculpting' },
-          { year: '2021 — 2023', desc: 'Blender studio · hard-surface & environments' },
-        ]
-      },
-      ru: {
-        expTitle: '💼 Опыт работы',
-        galleryTitle: '🖼️ Галерея',
-        contactTitle: '📬 Связаться со мной',
-        addExp: 'Добавить опыт',
-        addMedia: 'Добавить медиа',
-        editContact: 'Редактировать контакты',
-        yearPlaceholder: 'Год',
-        descPlaceholder: 'Описание',
-        discord: 'Дискорд',
-        telegram: 'Телеграм',
-        defaultExp: [
-          { year: '2023 — сейчас', desc: 'Фриланс 3D-художник · скульптинг персонажей' },
-          { year: '2021 — 2023', desc: 'Blender-студия · хард-сёрфейс и окружение' },
-        ]
-      }
-    };
-
-    // ----- state -----
-    let currentLang = 'en';
-    let expData = JSON.parse(JSON.stringify(strings.en.defaultExp)); // mutable
-    let mediaData = []; // { type: 'image'|'video'|'youtube', src: string, title: string }
-    let contactData = {
-      discord: 'https://discord.com/users/yourid',
-      telegram: 'https://t.me/yourusername'
-    };
-
-    // ----- DOM refs -----
-    const expBlock = document.getElementById('expBlock');
-    const galleryGrid = document.getElementById('galleryGrid');
-    const expTitle = document.getElementById('expTitle');
-    const galleryTitle = document.getElementById('galleryTitle');
-    const contactTitle = document.getElementById('contactTitle');
-    const addExpLabel = document.getElementById('addExpLabel');
-    const addMediaLabel = document.getElementById('addMediaLabel');
-    const editContactLabel = document.getElementById('editContactLabel');
-    const contactLinks = document.getElementById('contactLinks');
-
-    // ----- render functions -----
-    function renderExperience() {
-      expBlock.innerHTML = '';
-      expData.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'exp-item fade-in';
-        div.innerHTML = `
-          <span class="exp-year" contenteditable="false">${item.year}</span>
-          <span class="exp-desc" contenteditable="false"><strong>·</strong> ${item.desc}</span>
-          <button class="exp-edit" data-index="${index}"><i class="fas fa-pen"></i> edit</button>
-          <button class="exp-edit" style="border-color:#8f3f22;" data-index="${index}" data-del><i class="fas fa-trash"></i></button>
-        `;
-        expBlock.appendChild(div);
-
-        // edit toggle
-        const editBtn = div.querySelector('.exp-edit:not([data-del])');
-        const yearSpan = div.querySelector('.exp-year');
-        const descSpan = div.querySelector('.exp-desc');
-        editBtn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const isEditable = yearSpan.getAttribute('contenteditable') === 'true';
-          if (isEditable) {
-            // save
-            expData[index].year = yearSpan.innerText.trim();
-            expData[index].desc = descSpan.innerText.replace('·', '').trim();
-            yearSpan.setAttribute('contenteditable', 'false');
-            descSpan.setAttribute('contenteditable', 'false');
-            yearSpan.style.outline = 'none';
-            descSpan.style.outline = 'none';
-            editBtn.innerHTML = '<i class="fas fa-pen"></i> edit';
-          } else {
-            yearSpan.setAttribute('contenteditable', 'true');
-            descSpan.setAttribute('contenteditable', 'true');
-            yearSpan.focus();
-            editBtn.innerHTML = '<i class="fas fa-save"></i> save';
-          }
-        });
-
-        // delete
-        const delBtn = div.querySelector('[data-del]');
-        delBtn.addEventListener('click', function() {
-          if (confirm('Remove this entry?')) {
-            expData.splice(index, 1);
-            renderExperience();
-            updateLangStrings();
-          }
-        });
-      });
-    }
-
-    function renderGallery() {
-      galleryGrid.innerHTML = '';
-      if (mediaData.length === 0) {
-        galleryGrid.innerHTML = `<div style="grid-column:1/-1; padding:2rem; text-align:center; color:#b8866a;">✨ No media yet. Click "Add media"</div>`;
-        return;
-      }
-      mediaData.forEach((item, index) => {
-        const card = document.createElement('div');
-        card.className = 'gallery-card fade-in';
-        let mediaHtml = '';
-        if (item.type === 'image') {
-          mediaHtml = `<img src="${item.src}" alt="${item.title || 'image'}" loading="lazy">`;
-        } else if (item.type === 'video') {
-          mediaHtml = `<video controls preload="metadata" poster="${item.poster || ''}"><source src="${item.src}" type="video/mp4"></video>`;
-        } else if (item.type === 'youtube') {
-          // embed youtube
-          const vid = extractYouTubeId(item.src);
-          if (vid) {
-            mediaHtml = `<iframe src="https://www.youtube.com/embed/${vid}" allowfullscreen loading="lazy"></iframe>`;
-          } else {
-            mediaHtml = `<div style="padding:1rem;color:#b8866a;">Invalid YouTube URL</div>`;
-          }
-        }
-        card.innerHTML = `
-          <div class="media-wrapper">${mediaHtml}</div>
-          <div class="card-footer">
-            <span class="card-title">${item.title || 'Untitled'}</span>
-            <div class="card-actions">
-              <button data-editmedia="${index}"><i class="fas fa-pen"></i></button>
-              <button data-delmedia="${index}"><i class="fas fa-trash"></i></button>
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>
+                    <span data-i18n="hero.title1">I create</span><br>
+                    <span class="gradient-text" data-i18n="hero.title2">3D art</span><br>
+                    <span data-i18n="hero.title3">with Blender</span>
+                </h1>
+                <p data-i18n="hero.desc">3D artist specializing in character sculpting, environment design, and animation. 4+ years of experience in Blender.</p>
+                <div class="hero-buttons">
+                    <a href="#gallery" class="btn btn-primary" data-i18n="hero.btn1">🎨 View Gallery</a>
+                    <a href="#contact" class="btn btn-outline" data-i18n="hero.btn2">✉️ Contact</a>
+                </div>
             </div>
-          </div>
-        `;
-        galleryGrid.appendChild(card);
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <video src="./WalkAnimation.mp4" autoplay muted loop playsinline></video>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        // edit media (title & src)
-        card.querySelector('[data-editmedia]')?.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const newTitle = prompt('Media title:', item.title || '');
-          if (newTitle !== null) item.title = newTitle || 'Untitled';
-          const newSrc = prompt('Media URL (image/video/youtube):', item.src);
-          if (newSrc !== null) {
-            item.src = newSrc;
-            // detect type
-            if (newSrc.includes('youtube.com') || newSrc.includes('youtu.be')) {
-              item.type = 'youtube';
-            } else if (newSrc.match(/\.(mp4|webm|mov)/i)) {
-              item.type = 'video';
-            } else {
-              item.type = 'image';
-            }
-          }
-          renderGallery();
-          updateLangStrings();
-        });
+    <!-- ===== GALLERY ===== -->
+    <section class="section" id="gallery">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag" data-i18n="gallery.tag">🎨 Portfolio</div>
+                <h2 class="section-title" data-i18n="gallery.title">My Gallery</h2>
+                <p class="section-subtitle" data-i18n="gallery.sub">3D models, renders, and animations created in Blender.</p>
+            </div>
+            <div class="gallery-grid" id="galleryGrid"></div>
+        </div>
+    </section>
 
-        card.querySelector('[data-delmedia]')?.addEventListener('click', function() {
-          if (confirm('Delete this media?')) {
-            mediaData.splice(index, 1);
-            renderGallery();
-            updateLangStrings();
-          }
-        });
-      });
-    }
+    <!-- ===== EXPERIENCE ===== -->
+    <section class="section" id="experience" style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag" data-i18n="experience.tag">💼 Career</div>
+                <h2 class="section-title" data-i18n="experience.title">Work Experience</h2>
+                <p class="section-subtitle" data-i18n="experience.sub">My professional journey in 3D art.</p>
+            </div>
+            <div class="exp-block" id="expBlock"></div>
+        </div>
+    </section>
 
-    function extractYouTubeId(url) {
-      if (!url) return null;
-      const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-      const match = url.match(regExp);
-      return (match && match[2].length === 11) ? match[2] : null;
-    }
+    <!-- ===== ABOUT ===== -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image-wrapper">
+                    <img src="./fantysRender.png" alt="3D Artist">
+                </div>
+                <div class="about-text">
+                    <div class="section-tag" data-i18n="about.tag">👋 About me</div>
+                    <h3 data-i18n="about.title">Hi! I'm a Blender artist</h3>
+                    <p data-i18n="about.desc1">I specialize in character modeling, sculpting, and environment design. I've been working with Blender for over 4 years, creating high-quality 3D assets for games and animations.</p>
+                    <p data-i18n="about.desc2">My passion is bringing ideas to life through 3D art — from realistic characters to stylized environments. I love the creative process and always strive for excellence in every project.</p>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Character Modeling</span>
+                        <span class="skill-tag">Sculpting</span>
+                        <span class="skill-tag">Environment Design</span>
+                        <span class="skill-tag">Texturing</span>
+                        <span class="skill-tag">Animation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    function renderContact() {
-      contactLinks.innerHTML = `
-        <a href="${contactData.discord}" target="_blank" class="contact-btn"><i class="fab fa-discord"></i> <span id="discordLabel">${strings[currentLang].discord}</span></a>
-        <a href="${contactData.telegram}" target="_blank" class="contact-btn"><i class="fab fa-telegram-plane"></i> <span id="telegramLabel">${strings[currentLang].telegram}</span></a>
-      `;
-    }
+    <!-- ===== CONTACT ===== -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="contact-card">
+                <div class="section-tag" data-i18n="contact.tag">💬 Contact</div>
+                <h3 data-i18n="contact.title">Let's work together!</h3>
+                <p data-i18n="contact.sub">Reach me on Discord or Telegram.</p>
+                <div class="contact-links" id="contactLinks">
+                    <!-- Контакты генерируются из JS -->
+                </div>
+            </div>
+        </div>
+    </section>
 
-    function updateLangStrings() {
-      const lang = currentLang;
-      expTitle.innerText = strings[lang].expTitle;
-      galleryTitle.innerText = strings[lang].galleryTitle;
-      contactTitle.innerText = strings[lang].contactTitle;
-      addExpLabel.innerText = strings[lang].addExp;
-      addMediaLabel.innerText = strings[lang].addMedia;
-      editContactLabel.innerText = strings[lang].editContact;
-      // dynamic contact labels
-      const discordLabel = document.getElementById('discordLabel');
-      const telegramLabel = document.getElementById('telegramLabel');
-      if (discordLabel) discordLabel.innerText = strings[lang].discord;
-      if (telegramLabel) telegramLabel.innerText = strings[lang].telegram;
-    }
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Blender Artist. All rights reserved.</p>
+        </div>
+    </footer>
 
-    // ----- add media (smart) -----
-    function addMediaFromPrompt() {
-      const src = prompt('Enter media URL (image, video .mp4, or YouTube link):');
-      if (!src) return;
-      let type = 'image';
-      if (src.includes('youtube.com') || src.includes('youtu.be')) type = 'youtube';
-      else if (src.match(/\.(mp4|webm|mov|avi)/i)) type = 'video';
-      const title = prompt('Media title:', 'Work ' + (mediaData.length+1));
-      mediaData.push({ type, src, title: title || 'Untitled' });
-      renderGallery();
-      updateLangStrings();
-    }
+    <script>
+        // ================================================================
+        //  ═════════════════════════════════════════════════════════════════
+        //  📌  ВСЕ НАСТРОЙКИ САЙТА – РЕДАКТИРУЙТЕ ТОЛЬКО ЭТОТ БЛОК ↓↓↓
+        //  ═════════════════════════════════════════════════════════════════
+        // ================================================================
 
-    // ----- add experience -----
-    function addExperience() {
-      const lang = currentLang;
-      const year = prompt('Year / period:', '2024');
-      const desc = prompt('Description:', lang === 'en' ? 'New role' : 'Новая роль');
-      if (year !== null && desc !== null) {
-        expData.push({ year: year || '—', desc: desc || '—' });
-        renderExperience();
-        updateLangStrings();
-      }
-    }
+        // -----------------------------------------------------------------
+        // 1. ГАЛЕРЕЯ РАБОТ (медиа)
+        //    Поддерживаемые типы:
+        //      - 'image'   → прямая ссылка на картинку (JPG, PNG, WebP...)
+        //      - 'video'   → ссылка на видеофайл (MP4, WebM...)
+        //      - 'youtube' → ссылка на YouTube (полная или короткая)
+        // -----------------------------------------------------------------
+        const GALLERY = [
+            // ---- КАРТИНКИ ----
+            { 
+                type: 'image', 
+                src: 'https://placehold.co/600x400/3f2016/ff8a55?text=Character+Sculpt', 
+                title: 'Character Sculpt',
+                tag: 'Blender, Sculpting'
+            },
+            { 
+                type: 'image', 
+                src: 'https://placehold.co/600x400/4d2b1e/e07a4a?text=Environment', 
+                title: 'Environment Design',
+                tag: 'Blender, Environment'
+            },
+            { 
+                type: 'image', 
+                src: 'https://placehold.co/600x400/2f1a12/ff7b3a?text=Render+Showcase', 
+                title: 'Render Showcase',
+                tag: 'Blender, Rendering'
+            },
+            // ---- YouTube ----
+            { 
+                type: 'youtube', 
+                src: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 
+                title: 'Demo Reel',
+                tag: 'Blender, Animation'
+            },
+            // ---- ВИДЕО (раскомментируйте, чтобы добавить) ----
+            // { 
+            //     type: 'video', 
+            //     src: 'https://www.w3schools.com/html/mov_bbb.mp4', 
+            //     title: 'Showcase Video',
+            //     tag: 'Blender, Animation'
+            // }
+        ];
 
-    // ----- edit contacts -----
-    function editContacts() {
-      const newDiscord = prompt('Discord URL (or username):', contactData.discord);
-      if (newDiscord !== null) contactData.discord = newDiscord || '#';
-      const newTelegram = prompt('Telegram URL (or username):', contactData.telegram);
-      if (newTelegram !== null) contactData.telegram = newTelegram || '#';
-      renderContact();
-      updateLangStrings();
-    }
+        // -----------------------------------------------------------------
+        // 2. ОПЫТ РАБОТЫ (на двух языках)
+        //    Добавляйте/удаляйте объекты { year: '...', desc: '...' }
+        // -----------------------------------------------------------------
+        const EXPERIENCE = {
+            en: [
+                { year: '2023 — now', desc: 'Freelance 3D artist · character sculpting & modeling' },
+                { year: '2021 — 2023', desc: 'Blender studio · hard-surface & environment design' },
+                { year: '2019 — 2021', desc: 'Junior modeler · prop design & texturing' }
+            ],
+            ru: [
+                { year: '2023 — сейчас', desc: 'Фриланс 3D-художник · скульптинг персонажей и моделирование' },
+                { year: '2021 — 2023', desc: 'Blender-студия · хард-сёрфейс и дизайн окружения' },
+                { year: '2019 — 2021', desc: 'Младший моделировщик · дизайн пропсов и текстурирование' }
+            ]
+        };
 
-    // ----- init with some sample media -----
-    function initSampleMedia() {
-      mediaData = [
-        { type: 'image', src: 'https://placehold.co/600x400/3f2016/ff8a55?text=Blender+Render', title: 'Character sculpt' },
-        { type: 'image', src: 'https://placehold.co/600x400/4d2b1e/e07a4a?text=Environment', title: 'Environment' },
-        { type: 'youtube', src: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', title: 'Demo reel' }
-      ];
-    }
-    initSampleMedia();
+        // -----------------------------------------------------------------
+        // 3. ССЫЛКИ ДЛЯ КНОПОК "Discord" и "Telegram"
+        //    Замените на свои актуальные ссылки.
+        // -----------------------------------------------------------------
+        const CONTACTS = {
+            discord: 'https://discord.com/users/yourid',   // ← сюда свою ссылку Discord
+            telegram: 'https://t.me/yourusername'          // ← сюда свою ссылку Telegram
+        };
 
-    // ----- event listeners -----
-    document.getElementById('addMediaBtn').addEventListener('click', addMediaFromPrompt);
-    document.getElementById('addExpBtn').addEventListener('click', addExperience);
-    document.getElementById('editContactBtn').addEventListener('click', editContacts);
-
-    // language toggle
-    document.getElementById('langEn').addEventListener('click', function() {
-      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      currentLang = 'en';
-      // reset expData to default EN if empty? but we keep user data, only change strings
-      // if user wants fresh, but we keep data.
-      updateLangStrings();
-      renderContact(); 
-      // re-render exp and gallery with current data (no data change)
-      renderExperience();
-      renderGallery();
-    });
-    document.getElementById('langRu').addEventListener('click', function() {
-      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      currentLang = 'ru';
-      updateLangStrings();
-      renderContact();
-      renderExperience();
-      renderGallery();
-    });
-
-    // initial render
-    renderExperience();
-    renderGallery();
-    renderContact();
-    updateLangStrings();
-
-    // enable content editable styling on focus (global)
-    document.addEventListener('focusin', function(e) {
-      if (e.target.getAttribute('contenteditable') === 'true') {
-        e.target.style.outline = '2px dashed #ff8a55';
-      }
-    });
-    document.addEventListener('focusout', function(e) {
-      if (e.target.getAttribute('contenteditable') === 'true') {
-        e.target.style.outline = 'none';
-      }
-    });
-  })();
-</script>
-</body>
-</html>
+        // -----------------------------------------------------------------
+        // 4. ТЕКСТЫ ДЛЯ ПЕРЕВОДОВ (английский и русский)
+        //    Меняйте здесь все надписи, заголовки.
+        // -----------------------------------------------------------------
+        const TRANSLATIONS = {
+            en: {
+                'nav.home': 'Home',
+                'nav.gallery': 'Gallery',
+                'nav.experience': 'Experience',
+                'nav.about': 'About',
+                'nav.contact': 'Contact',
+                'hero.title1': 'I create',
+                'hero.title2': '3D art',
+                'hero.title3': 'with Blender',
+                'hero.desc': '3D artist specializing in character sculpting, environment design, and animation. 4+ years of experience in Blender.',
+                'hero.btn1': '🎨 View Gallery',
+                'hero.btn2': '✉️ Contact',
+                'gallery.tag': '🎨 Portfolio',
+                'gallery.title': 'My Gallery',
+                'gallery.sub': '3D models, renders, and animations created in Blender.',
+                'experience.tag': '💼 Career',
+                'experience.title': 'Work Experience',
+                'experience.sub': 'My professional journey in 3D art.',
+                'about.tag': '👋 About me',
+                'about.title': "Hi! I'm a Blender artist",
+                'about.desc1': 'I specialize in character modeling, sculpting, and environment design. I\'ve been working with Blender for over 4 years, creating high-quality 3D assets for games and animations.',
+                'about.desc2': 'My passion is bringing ideas to life through 3D art — from realistic characters to stylized environments. I love the creative process and always strive for excellence in every project.',
+                'contact.tag': '💬 Contact',
+                'contact.title': "Let's work together!",
+                'contact.sub': 'Reach me on Discord or Telegram.'
+            },
+            ru: {
+                'nav.home': 'Главная',
+                'nav.gallery': 'Галерея',
+                'nav.experience': 'Опыт',
+                'nav.about': 'Обо мне',
+                'nav.contact': 'Контакты',
+                'hero.title1': 'Создаю',
+                'hero.title2': '3D-арт',
+                'hero.title3': 'в Blender',
+                'hero.desc': '3D-художник, специализирующийся на скульптинге персонажей, дизайне окружения и анимации. Более 4 лет работаю в Blender.',
+                'hero.btn1': '🎨 Мои работы',
+                'hero.btn2': '✉️ Связаться',
+                'gallery.tag': '
