@@ -255,11 +255,7 @@
         position: relative; overflow: hidden;
     }
     .btn-primary { background: var(--flame); color: #fff; box-shadow: 0 8px 28px rgba(255,87,34,0.35); }
-    .btn::before{content:'';position:absolute;inset:-50%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-120%) rotate(15deg);transition:.8s}
-.btn:hover::before{transform:translateX(120%) rotate(15deg)}
-.btn{backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)}
-.btn-primary:hover{transform:translateY(-5px) scale(1.04);box-shadow:0 0 30px rgba(255,120,50,.6),0 15px 40px rgba(0,0,0,.35)}
-.btn:active{transform:scale(.96)}
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 34px rgba(255,87,34,0.5); }
     .btn-outline { background: transparent; color: #fff; border: 1.5px solid var(--border-light); }
     .btn-outline:hover { border-color: var(--accent); background: rgba(255,87,34,0.08); transform: translateY(-2px); }
 
@@ -440,10 +436,11 @@
 <div class="embers" id="embers"></div>
 
 <nav class="navbar" id="navbar">
-    <div class="nav-logo"><span class="logo-dot"></span> <span id="logoName">Slayl</span></div>
+    <div class="nav-logo"><span class="logo-dot"></span> <span id="logoName">Fantys</span></div>
     <ul class="nav-links" id="navLinks">
         <li><a href="#home" class="active" data-i18n="nav.home">Home</a></li>
         <li><a href="#gallery" data-i18n="nav.gallery">Works</a></li>
+        <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
         <li><a href="#about" data-i18n="nav.about">About</a></li>
         <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
     </ul>
@@ -489,7 +486,16 @@
     </div>
 </section>
 
-
+<section class="section" id="projects">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag" data-i18n="projects.tag">📋 Credits</div>
+            <h2 class="section-title" data-i18n="projects.title">Projects I worked on</h2>
+            <p class="section-subtitle" data-i18n="projects.sub">Games and studios I created renders and animations for.</p>
+        </div>
+        <div class="projects-list reveal" id="projectsList"></div>
+    </div>
+</section>
 
 <section class="section" id="about">
     <div class="container">
@@ -538,30 +544,37 @@
    ===================================================================== */
 
 // ---------- 1. ИМЯ / ЛОГОТИП ----------
-document.getElementById('logoName').textContent = 'Slayl'; // <- твой ник/бренд
+document.getElementById('logoName').textContent = 'Fantys'; // <- твой ник/бренд
 
 // ---------- 2. ССЫЛКИ НА СОЦСЕТИ ----------
 // поменяй href у .contact-discord и .contact-telegram выше в HTML (или через JS ниже)
-document.querySelector('.contact-discord').href = 'https://discord.com/users/922193323849048084';
-document.querySelector('.contact-telegram').href = 'https://t.me/DangerPavlik';
+document.querySelector('.contact-discord').href = 'https://discord.com/users/1153467688249725000';
+document.querySelector('.contact-telegram').href = 'https://t.me/your_telegram';
 
 // ---------- 3. ГАЛЕРЕЯ ----------
 // type: 'youtube' -> src: ссылка на YouTube видео
 // type: 'video'   -> src: путь к .mp4, thumb (необязательно): обложка
 // type: 'image'   -> src: путь к картинке
 const galleryItems = [
-    { src:'./qwe.png', thumb:'./Template.png', caption:'Template', tag:'Blender', type:'image' }
+    { src: 'https://www.youtube.com/watch?v=4IR6BWdfWiI', caption: 'Fire FX Breakdown', tag: 'Blender / Cycles', type: 'youtube' },
+    { src: 'https://www.youtube.com/watch?v=nc4467TFsKQ', caption: 'Character Walk Cycle', tag: 'Blender', type: 'youtube' },
+    { src: './MeleeAnimation.mp4', thumb: './thumbMelee.png', caption: 'Melee Combat Anim', tag: 'Blender', type: 'video' },
+    { src: 'https://www.youtube.com/watch?v=A3F3clf78yo', caption: 'Cinematic Render Test', tag: 'Blender', type: 'youtube' },
+    { src: 'https://www.youtube.com/watch?v=yFW-ZKsilKo', caption: 'Molten Aura VFX', tag: 'Blender / EEVEE', type: 'youtube' },
+    { src: 'https://www.youtube.com/watch?v=L6o7NX3neVA', caption: 'Dance Loop', tag: 'Blender', type: 'youtube' },
 ];
 
 // ---------- 4. ПРОЕКТЫ ----------
-const projects = [];
+const projects = [
+    // { name: 'Killer vs Survivors', description: 'Cinematic trailer render and in-game FX.' },
+];
 
 // ---------- 5. ТЕКСТЫ (EN / RU) ----------
 const translations = {
     en: {
         'nav.home': 'Home', 'nav.gallery': 'Works', 'nav.projects': 'Projects', 'nav.about': 'About', 'nav.contact': 'Contact',
         'hero.title1': 'I build', 'hero.title2': 'worlds in Blender', 'hero.title3': 'frame by frame',
-        'hero.desc': '1 years in Blender. Cinematic renders, fire & light FX, and smooth character animation for Roblox and beyond.',
+        'hero.desc': '3 years in Blender. Cinematic renders, fire & light FX, and smooth character animation for Roblox and beyond.',
         'hero.btn1': '🔥 See my work', 'hero.btn2': '✉️ Get in touch',
         'gallery.tag': '🎬 Portfolio', 'gallery.title': 'My works', 'gallery.sub': 'Renders, animations and breakdowns made in Blender.',
         'projects.tag': '📋 Credits', 'projects.title': 'Projects I worked on', 'projects.sub': 'Games and studios I created renders and animations for.',
@@ -576,7 +589,7 @@ const translations = {
     ru: {
         'nav.home': 'Главная', 'nav.gallery': 'Работы', 'nav.projects': 'Проекты', 'nav.about': 'Обо мне', 'nav.contact': 'Контакты',
         'hero.title1': 'Создаю', 'hero.title2': 'миры в Blender', 'hero.title3': 'кадр за кадром',
-        'hero.desc': '1 года в Blender. Кинематографичные рендеры, огненные и световые эффекты, плавная анимация персонажей для Roblox и не только.',
+        'hero.desc': '3 года в Blender. Кинематографичные рендеры, огненные и световые эффекты, плавная анимация персонажей для Roblox и не только.',
         'hero.btn1': '🔥 Мои работы', 'hero.btn2': '✉️ Связаться',
         'gallery.tag': '🎬 Портфолио', 'gallery.title': 'Мои работы', 'gallery.sub': 'Рендеры, анимации и брейкдауны, сделанные в Blender.',
         'projects.tag': '📋 Проекты', 'projects.title': 'В каких проектах участвовал', 'projects.sub': 'Игры и студии, для которых я делал рендеры и анимации.',
